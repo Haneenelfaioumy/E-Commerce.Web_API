@@ -17,7 +17,7 @@ namespace Persistence.Repositories
 
         public async Task<IEnumerable<TEntity>> GetAllAsync() => await _dbContext.Set<TEntity>().ToListAsync();
 
-        public async Task<TEntity?> GetById(Tkey id) => await _dbContext.Set<TEntity>().FindAsync(id);
+        public async Task<TEntity?> GetByIdAsync(Tkey id) => await _dbContext.Set<TEntity>().FindAsync(id);
 
         public void Remove(TEntity entity) => _dbContext.Set<TEntity>().Remove(entity);
       
