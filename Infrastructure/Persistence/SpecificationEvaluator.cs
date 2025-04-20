@@ -21,6 +21,14 @@ namespace Persistence
             {
                 Query = Query.Where(specifications.Criteria);
             }
+            if (specifications.OrderBy is not null)
+            {
+                Query = Query.OrderBy(specifications.OrderBy);
+            }
+            if (specifications.OrderByDescending is not null)
+            {
+                Query = Query.OrderByDescending(specifications.OrderByDescending);
+            }
             if (specifications.IncludeExpressions is not null && specifications.IncludeExpressions.Count > 0)
             {
                 //foreach(var exp in specifications.IncludeExpressions)
