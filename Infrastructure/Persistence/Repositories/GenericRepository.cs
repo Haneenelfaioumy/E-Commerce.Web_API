@@ -22,5 +22,23 @@ namespace Persistence.Repositories
         public void Remove(TEntity entity) => _dbContext.Set<TEntity>().Remove(entity);
       
         public void Update(TEntity entity) => _dbContext.Set<TEntity>().Update(entity);
+
+        #region With Specifications
+         
+        async Task<IEnumerable<TEntity>> IGenericRepository<TEntity, Tkey>.GetAllAsync(ISpecifications<TEntity, Tkey> specifications)
+        {
+            return await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specifications).ToListAsync();
+        }
+
+        async Task<TEntity?> IGenericRepository<TEntity, Tkey>.GetByIdAsync(ISpecifications<TEntity, Tkey> specifications)
+        {
+            return await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specifications).FirstOrDefaultAsync();
+        }
+
+        #endregion
+
+        public async Task<int> CountAsync(ISpecifications<TEntity, Tkey> specifications)
+         => await SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>() , specifications).CountAsync();
+
     }
 }
