@@ -39,7 +39,7 @@ namespace Persistence
 
                 Query = specifications
                           .IncludeExpressions
-                          .Aggregate(Query, (CurrentQuery, IncludeExp) => CurrentQuery.Include(IncludeExp);
+                          .Aggregate(Query, (CurrentQuery, IncludeExp) => CurrentQuery.Include(IncludeExp));
             }
             
             if(specifications.IsPaginated)
