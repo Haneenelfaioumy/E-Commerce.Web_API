@@ -21,29 +21,46 @@ namespace E_Commerce.Web.CustomMiddleWares
             try
             {
                 await _next.Invoke(httpContext);
+                await HandleNotFoundEndPointAsync(httpContext);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Something Went Wrong");
 
-                // Set Status Code For Response
-                httpContext.Response.StatusCode = ex switch
-                {
-                    NotFoundException => StatusCodes.Status404NotFound,
-                    _ => StatusCodes.Status500InternalServerError
-                };
+                await HandleExceptionAsync(httpContext, ex);
+            }
+        }
 
-                //// Set Content Type For Response
-                //httpContext.Response.ContentType = "application/json";
+        private static async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
+        {
+            // Set Status Code For Response
+            httpContext.Response.StatusCode = ex switch
+            {
+                NotFoundException => StatusCodes.Status404NotFound,
+                _ => StatusCodes.Status500InternalServerError
+            };
+            //// Set Content Type For Response
+            //httpContext.Response.ContentType = "application/json";
 
-                // Response Object
+            // Response Object
+            var Response = new ErrorToReturn()
+            {
+                StatusCode = httpContext.Response.StatusCode,
+                ErrorMessage = ex.Message
+            };
+            // Return Object As JSON
+            await httpContext.Response.WriteAsJsonAsync(Response);
+        }
+
+        private static async Task HandleNotFoundEndPointAsync(HttpContext httpContext)
+        {
+            if (httpContext.Response.StatusCode == StatusCodes.Status404NotFound)
+            {
                 var Response = new ErrorToReturn()
                 {
-                    StatusCode = httpContext.Response.StatusCode,
-                    ErrorMessage = ex.Message
+                    StatusCode = StatusCodes.Status404NotFound,
+                    ErrorMessage = $"End Point {httpContext.Request.Path} is Not Found"
                 };
-
-                // Return Object As JSON
                 await httpContext.Response.WriteAsJsonAsync(Response);
             }
         }
