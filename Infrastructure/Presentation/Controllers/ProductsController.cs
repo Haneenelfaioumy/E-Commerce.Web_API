@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAbstraction;
 using Shared;
@@ -14,6 +15,7 @@ namespace Presentation.Controllers
     {
         // Get All Products
         // GET BaseUrl/api/Products
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<ProductDTo>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
         {
