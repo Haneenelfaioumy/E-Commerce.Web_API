@@ -10,6 +10,7 @@ namespace E_Commerce.Web.Extensions
             using var Scope = app.Services.CreateScope();
             var ObjectOfDataSeeding = Scope.ServiceProvider.GetRequiredService<IDataSeeding>();
             await ObjectOfDataSeeding.DataSeedAsync();
+            await ObjectOfDataSeeding.IdentityDataSeedAsync();
         }
 
         public static IApplicationBuilder UseCustomExceptionMiddleWare(this IApplicationBuilder app)
