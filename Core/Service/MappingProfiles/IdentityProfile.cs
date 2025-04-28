@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DomainLayer.Models.IdentityModule;
+using Shared.DataTransferObjects.IdentityDTos;
 
 namespace Service.MappingProfiles
 {
@@ -12,7 +13,7 @@ namespace Service.MappingProfiles
     {
         public IdentityProfile()
         {
-            CreateMap<Address , Address>().ReverseMap();
+            CreateMap<Address , AddressDTo>().ReverseMap();
         }
     }
 }
